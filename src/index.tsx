@@ -6,7 +6,7 @@ import { router } from './core/router/router';
 import './main.scss';
 
 createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 ).render(
-  <RouterProvider router={router} />
+  <RouterProvider router={router} />,
 );
