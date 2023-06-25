@@ -1,10 +1,9 @@
-import { WebpackConfiguration } from "webpack-cli";
-import path from "path";
-import {Mode, BuildEnv, BuildPaths, BuildOptions} from "./config/build/types";
-import {buildLoaders} from "./config/build/build-loaders";
-import {buildPlugins} from "./config/build/build-plugins";
-import {buildDevServer} from "./config/build/build-dev-server";
-
+import { type WebpackConfiguration } from 'webpack-cli';
+import path from 'path';
+import { type Mode, type BuildEnv, type BuildPaths, type BuildOptions } from './config/build/types';
+import { buildLoaders } from './config/build/build-loaders';
+import { buildPlugins } from './config/build/build-plugins';
+import { buildDevServer } from './config/build/build-dev-server';
 
 const createWebpackConfig = (opts: BuildOptions): WebpackConfiguration => {
   const { mode, paths, isDev } = opts;
@@ -21,7 +20,7 @@ const createWebpackConfig = (opts: BuildOptions): WebpackConfiguration => {
       rules: buildLoaders(opts),
     },
     resolve: {
-      extensions: [".tsx", ".ts", ".js"],
+      extensions: ['.tsx', '.ts', '.js'],
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
@@ -29,7 +28,7 @@ const createWebpackConfig = (opts: BuildOptions): WebpackConfiguration => {
     plugins: buildPlugins(opts),
     devtool: isDev ? 'inline-source-map' : undefined,
     devServer: isDev ? buildDevServer(opts.port) : undefined,
-  }
+  };
 };
 
 export default (env: BuildEnv): WebpackConfiguration => {

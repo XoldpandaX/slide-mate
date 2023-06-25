@@ -1,13 +1,13 @@
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import { type RuleSetRule } from 'webpack'
-import { type BuildOptions } from './types'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { type RuleSetRule } from 'webpack';
+import { type BuildOptions } from './types';
 
 export const buildLoaders = (opts: BuildOptions): RuleSetRule[] => {
   const typescriptLoader = {
     test: /\.tsx?$/,
     use: 'ts-loader',
     exclude: /node_modules/,
-  }
+  };
 
   const cssLoader = {
     test: /\.(css|scss)$/,
@@ -27,7 +27,7 @@ export const buildLoaders = (opts: BuildOptions): RuleSetRule[] => {
       },
       'sass-loader',
     ],
-  }
+  };
 
   return [typescriptLoader, cssLoader];
-}
+};

@@ -1,7 +1,5 @@
-import { type FC, type PropsWithChildren, Suspense } from 'react'
+import { type FC, type PropsWithChildren, Suspense } from 'react';
 
 export const RouterSuspense: FC<PropsWithChildren> = (props) => (
-  <Suspense fallback={<div>Loading...</div>}>
-    {props.children}
-  </Suspense>
-)
+  <Suspense fallback={<div>Loading...</div>}>{props.children}</Suspense>
+);

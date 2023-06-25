@@ -1,4 +1,4 @@
-import { type Configuration } from 'webpack-dev-server'
+import { type Configuration } from 'webpack-dev-server';
 
 export const buildDevServer = (port: number): Configuration => ({
   port,
@@ -10,4 +10,4 @@ export const buildDevServer = (port: number): Configuration => ({
     overlay: true,
     progress: true,
   },
-})
+});

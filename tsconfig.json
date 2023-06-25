@@ -15,19 +15,17 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {
-        "name": "typescript-plugin-css-modules",
+        "name": "typescript-plugin-css-modules"
       }
     ]
   },
   "ts-node": {
     "compilerOptions": {
-      "module": "CommonJS",
+      "module": "CommonJS"
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]

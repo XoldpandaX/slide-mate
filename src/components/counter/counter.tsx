@@ -11,10 +11,8 @@ export const Counter: FC = () => {
 
   return (
     <div className={styles.buttonA}>
-      <button onClick={increaseCounter}>
-        increase counter
-      </button>
+      <button onClick={increaseCounter}>increase counter</button>
       <div>current counter is {counter}</div>
     </div>
   );
-}
+};
