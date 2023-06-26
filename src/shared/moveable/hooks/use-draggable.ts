@@ -1,14 +1,14 @@
 import { useRef, type RefObject } from 'react';
 import { type OnDrag, type OnDragEnd } from 'react-moveable';
 
-interface UseDraggable {
-  draggableRef: RefObject<HTMLDivElement>;
+interface UseDraggable<RefElement> {
+  draggableRef: RefObject<RefElement>;
   getDraggableSnapShot: (e: OnDragEnd) => void;
   changeDraggablePosition: (e: OnDrag) => void;
 }
 
-const useDraggable = (): UseDraggable => {
-  const draggableRef = useRef<HTMLDivElement>(null);
+const useDraggable = <RefElement>(): UseDraggable<RefElement> => {
+  const draggableRef = useRef<RefElement>(null);
 
   const getDraggableSnapShot = (e: OnDragEnd): void => {
     const { width, height, dist } = e.lastEvent;

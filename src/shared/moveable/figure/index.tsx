@@ -1,9 +1,11 @@
 import { type FC } from 'react';
 import MoveAble, { type OnResize } from 'react-moveable';
 import useDraggable from '../hooks/use-draggable';
+import Icon from './svg/square.svg';
 
 export const Figure: FC = () => {
-  const { draggableRef, getDraggableSnapShot, changeDraggablePosition } = useDraggable();
+  const { draggableRef, getDraggableSnapShot, changeDraggablePosition } =
+    useDraggable<SVGSVGElement>();
 
   const changeTargetPosition = (e: OnResize): void => {
     e.target.style.width = `${e.width}px`;
@@ -14,12 +16,7 @@ export const Figure: FC = () => {
   return (
     <div className="root">
       <div className="container">
-        <div
-          className="target"
-          ref={draggableRef}
-        >
-          Target
-        </div>
+        <Icon ref={draggableRef} />
         <MoveAble
           target={draggableRef}
           draggable={true}
