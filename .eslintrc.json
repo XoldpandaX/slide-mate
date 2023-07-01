@@ -11,13 +11,15 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
+    "semi": "off",
     "prettier/prettier": ["error"],
     "react/jsx-uses-react": "off",
     // no need to import React starts from React v.17.0 version
     "react/react-in-jsx-scope": "off",
     // no need to import React starts from React v.17.0 version
+    "n/no-callback-literal": "off",
+    "@typescript-eslint/consistent-type-imports": "off",
     "@typescript-eslint/semi": "off",
-    "semi": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/member-delimiter-style": [
       "error",
