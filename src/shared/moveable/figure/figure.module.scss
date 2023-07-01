@@ -1,0 +1,19 @@
+.figure {
+  color: red;
+
+  &.hideMoveableControl {
+    cursor: move;
+
+    :global(.rCS1ec1yfw) {
+      :global(.moveable-control) {
+        display: none;
+      }
+    }
+  }
+
+  &.hideMoveableControlBox {
+    :global(.moveable-control-box) {
+      display: none !important;
+    }
+  }
+}

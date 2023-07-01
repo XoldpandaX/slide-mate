@@ -1,27 +1,39 @@
 import { useRef, useState, RefObject } from 'react';
 import { OnDrag, OnDragEnd, OnResize } from 'react-moveable';
+import { cn } from '@/shared/utils/cn';
 import {
   IDraggableCommonSnapshot,
   IDraggableLastEvent,
   ISvgSnapshot,
 } from '@/shared/moveable/types';
 
-interface UseDraggable<RefElement> {
+import styles from '@/shared/moveable/figure/figure.module.scss';
+
+interface UseMoveable<RefElement extends HTMLElement | SVGSVGElement> {
   moveableElRef: RefObject<RefElement>;
   isDrag: boolean;
+  isSelected: boolean;
+  rootClasses: string;
   getSvgSnapShot: (cb: (data: ISvgSnapshot) => void) => (e: OnDragEnd) => void;
   changePosition: (e: OnDrag) => void;
   changeSize: (e: OnResize) => void;
-  isMoveableDrag: boolean;
-  changeDragState: () => void;
+  toggleDragState: () => void;
+  changeSelectedState: (state: boolean) => void;
 }
 
-const useDraggable = <RefElement>(): UseDraggable<RefElement> => {
+const useDraggable = <
+  RefElement extends HTMLElement | SVGSVGElement
+>(): UseMoveable<RefElement> => {
+  const elRef = useRef<RefElement>(null);
   const [isDrag, setIsDrag] = useState(false);
-  const moveableElRef = useRef<RefElement>(null);
+  const [isSelected, setSelected] = useState(false);
 
-  const changeDragState = (): void => {
+  const toggleDragState = (): void => {
     setIsDrag((v) => !v);
+  };
+
+  const changeSelectedState = (state: boolean): void => {
+    setSelected(state);
   };
 
   const getSvgSnapShot =
@@ -53,13 +65,19 @@ const useDraggable = <RefElement>(): UseDraggable<RefElement> => {
   };
 
   return {
-    moveableElRef,
+    moveableElRef: elRef,
     isDrag,
-    isMoveableDrag: isDrag,
+    isSelected,
+    rootClasses: cn(
+      styles.figure,
+      isDrag && styles.hideMoveableControl,
+      !isSelected && styles.hideMoveableControlBox
+    ),
     getSvgSnapShot,
     changePosition,
     changeSize,
-    changeDragState,
+    toggleDragState,
+    changeSelectedState,
   };
 };
 
