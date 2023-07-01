@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "clsx": "^1.2.1",
     "nanoid": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -41,6 +42,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
+    "eslint-webpack-plugin": "^4.0.1",
     "html-webpack-plugin": "^5.5.3",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
