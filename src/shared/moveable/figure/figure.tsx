@@ -1,71 +1,64 @@
-import { Suspense, FC } from 'react';
+import { Suspense, FC, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import { OnDragEnd, OnRender } from 'react-moveable';
 import { IFigure } from '@/shared/types/figure';
 import { getFigureSvgByName } from '@/shared/components/figure/get-figure-svg-by-name';
-import { useClickOutside } from '@/shared/hooks/use-click-outside';
 import Moveable from '../moveable';
 import useMoveable from '../hooks/use-moveable';
 
 export interface IFigureProps {
   type: 'square';
   data: IFigure;
+  onFigureUpdate: (figure: IFigure) => void;
 }
 
-export const Figure: FC<IFigureProps> = ({ data }) => {
+export const Figure: FC<IFigureProps> = ({ data, onFigureUpdate }) => {
+  const refRoot = useRef<HTMLDivElement>(null);
   const SvgFigure = getFigureSvgByName('square');
-  const { moveableElRef, toggleDragState, changeSelectedState, rootClasses } =
-    useMoveable<SVGSVGElement>();
-
-  useClickOutside({
-    onClickOutside: () => {
-      changeSelectedState(false);
-    },
-    ref: moveableElRef,
-  });
+  const {
+    moveableRef,
+    moveableInitStyles,
+    wrapperCssClasses,
+    handleDragStart,
+    handleDragEnd,
+    handleRender,
+    changeSelectionState,
+  } = useMoveable<SVGSVGElement>(data, refRoot);
 
   return (
-    <div className={rootClasses}>
+    <div
+      ref={refRoot}
+      className={wrapperCssClasses}
+    >
       <Suspense fallback={<div>loading</div>}>
         <SvgFigure
-          ref={moveableElRef}
+          ref={moveableRef}
           fill={data.fill}
-          style={{ transform: 'translate(146px, 65px)', width: '204px', height: '149px' }}
-          onClick={(e) => {
-            console.info(e);
-          }}
+          style={moveableInitStyles}
           onMouseDown={() => {
-            console.info('down');
-            changeSelectedState(true);
+            changeSelectionState(true);
           }}
         />
         <Moveable
-          target={moveableElRef}
+          target={moveableRef}
           flushSync={flushSync}
           draggable={true}
-          // rotatable={true}
+          useAccuratePosition={true}
           preventClickDefault={true}
           resizable={true}
-          // edgeDraggable={true}
-          // rotatable={true}
-          // hideDefaultLines={true}
           origin={false}
           throttleResize={1}
           throttleDrag={1}
           startDragRotate={0}
           throttleDragRotate={0}
-          onRender={(e: OnRender): void => {
-            console.info(e);
-            e.target.style.cssText += e.cssText;
-          }}
-          onDragStart={(e): void => {
-            console.info('onDragStart');
-            toggleDragState();
+          onDragStart={(): void => {
+            handleDragStart();
           }}
           onDragEnd={(e: OnDragEnd): void => {
-            console.info(e.moveable.getRect());
-            console.info('onDragEnd');
-            toggleDragState();
+            handleDragEnd(e, onFigureUpdate);
+          }}
+          onRender={(e: OnRender): void => {
+            handleRender(e);
           }}
         />
       </Suspense>
