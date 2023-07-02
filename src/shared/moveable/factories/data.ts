@@ -1,10 +1,10 @@
 import { IFigure } from '@/shared/types/figure';
 
 const emptyFigure: IFigure = {
-  width: 100,
-  height: 100,
-  top: 424,
-  left: 356,
+  width: 50,
+  height: 50,
+  top: 324,
+  left: 456,
   fill: 'red',
 };
 

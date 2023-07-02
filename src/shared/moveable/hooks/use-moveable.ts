@@ -1,96 +1,117 @@
 import { useRef, useState, RefObject } from 'react';
-import { OnDrag, OnDragEnd, OnResize } from 'react-moveable';
+import { OnDragStart, OnDragEnd, OnRender } from 'react-moveable';
+import { IFigure } from '@/shared/types/figure';
 import { cn } from '@/shared/utils/cn';
-import {
-  IDraggableCommonSnapshot,
-  IDraggableLastEvent,
-  ISvgSnapshot,
-} from '@/shared/moveable/types';
+import { createFigure } from '@/shared/moveable';
+import { useClickOutside } from '@/shared/hooks/use-click-outside';
+import { map, split, compose, equals } from '@/shared/utils/fn';
 
 import styles from '@/shared/moveable/figure/figure.module.scss';
 
-interface UseMoveable<RefElement extends HTMLElement | SVGSVGElement> {
-  moveableElRef: RefObject<RefElement>;
-  isDrag: boolean;
-  isSelected: boolean;
-  rootClasses: string;
-  getSvgSnapShot: (cb: (data: ISvgSnapshot) => void) => (e: OnDragEnd) => void;
-  changePosition: (e: OnDrag) => void;
-  changeSize: (e: OnResize) => void;
-  toggleDragState: () => void;
-  changeSelectedState: (state: boolean) => void;
+type Ref = HTMLElement | SVGSVGElement;
+
+interface UseMoveable<RefElement extends Ref> {
+  moveableRef: RefObject<RefElement>;
+  moveableInitStyles: { width: string; height: string; transform: string };
+  wrapperCssClasses: string;
+  handleDragStart: () => void;
+  handleDragEnd: (e: OnDragStart | OnDragEnd, onFigureUpdate: (figure: IFigure) => void) => void;
+  handleRender: (e: OnRender) => void;
+  changeSelectionState: (state: boolean) => void;
 }
 
-const useDraggable = <
-  RefElement extends HTMLElement | SVGSVGElement
->(): UseMoveable<RefElement> => {
+const useDraggable = <RefElement extends Ref>(
+  initFigure: IFigure,
+  refClickOutside: RefObject<Ref>
+): UseMoveable<RefElement> => {
   const elRef = useRef<RefElement>(null);
   const [isDrag, setIsDrag] = useState(false);
+  const [isDragRender, setIsDragRender] = useState(false);
   const [isSelected, setSelected] = useState(false);
+  const [figure, setFigure] = useState(initFigure);
 
-  const toggleDragState = (): void => {
-    setIsDrag((v) => !v);
+  // TODO: when layout appears click outside should be from layout el
+  useClickOutside({
+    onClickOutside: () => {
+      changeSelectionState(false);
+    },
+    ref: refClickOutside,
+  });
+
+  const wrapperCssClasses = cn(
+    styles.figure,
+    isDrag && isDragRender && styles.hideMoveableControl,
+    !isSelected && styles.hideMoveableControlBox
+  );
+
+  const moveableInitStyles = {
+    transform: `translate(${initFigure.left}px, ${initFigure.top}px)`,
+    width: `${initFigure.width}px`,
+    height: `${initFigure.height}px`,
   };
 
-  const changeSelectedState = (state: boolean): void => {
-    setSelected(state);
+  const handleDragStart = (): void => {
+    setIsDrag(true);
   };
 
-  const getSvgSnapShot =
-    (cb: (data: ISvgSnapshot) => void) =>
-    (e: OnDragEnd): void => {
-      if (e.isDrag && e.target.nodeName === 'svg') {
-        const commonSnapshot = getCommonSnapShot(e);
-        const fillAttribute = e.target.attributes.getNamedItem('fill');
-        const fill = fillAttribute ? fillAttribute.value : '#000000';
+  const handleDragEnd = (
+    e: OnDragStart | OnDragEnd,
+    onFigureUpdate: (figure: IFigure) => void
+  ): void => {
+    const { target } = e;
+    const [x, y] = getTargetTransformValue(e.target);
+    const updatedFigure = createFigure({
+      width: target.clientWidth,
+      height: target.clientHeight,
+      top: y,
+      left: x,
+      fill: 'red',
+    });
 
-        cb({
-          width: commonSnapshot.width,
-          height: commonSnapshot.height,
-          translateX: commonSnapshot.translateX,
-          translateY: commonSnapshot.translateY,
-          fill,
-        });
-      }
-    };
+    setIsDrag(false);
+    setIsDragRender(false);
 
-  const changePosition = (e: OnDrag): void => {
-    e.target.style.transform = e.transform;
+    if (!equals(updatedFigure, figure)) {
+      onFigureUpdate(updatedFigure);
+      setFigure(updatedFigure);
+    }
+
+    if (!isSelected) {
+      setSelected(true);
+    }
   };
 
-  const changeSize = (e: OnResize): void => {
-    e.target.style.width = `${e.width}px`;
-    e.target.style.height = `${e.height}px`;
-    e.target.style.transform = e.drag.transform;
+  const changeSelectionState = (state: boolean): void => {
+    /**
+     * The timeout below is needed when a moveable
+     * starts dragging immediately after selection
+     */
+    setTimeout(() => {
+      if (!isDragRender) setSelected(state);
+    }, 75);
+  };
+
+  const handleRender = (e: OnRender): void => {
+    if (isDrag && !isDragRender) setIsDragRender(true);
+    e.target.style.cssText += e.cssText;
   };
 
   return {
-    moveableElRef: elRef,
-    isDrag,
-    isSelected,
-    rootClasses: cn(
-      styles.figure,
-      isDrag && styles.hideMoveableControl,
-      !isSelected && styles.hideMoveableControlBox
-    ),
-    getSvgSnapShot,
-    changePosition,
-    changeSize,
-    toggleDragState,
-    changeSelectedState,
+    moveableRef: elRef,
+    moveableInitStyles,
+    wrapperCssClasses,
+    handleDragStart,
+    handleDragEnd,
+    handleRender,
+    changeSelectionState,
   };
 };
 
-function getCommonSnapShot(e: OnDragEnd): IDraggableCommonSnapshot {
-  const { width, height, dist } = e.lastEvent as IDraggableLastEvent;
-  const [translateX, translateY] = dist;
+function getTargetTransformValue(target: HTMLElement | SVGElement): [x: number, y: number] {
+  const leaveOnlyNumbers = (str: string): number => Number(str.replace(/\D/g, ''));
+  const [x, y] = compose(map(leaveOnlyNumbers), split(','))(target.style.transform);
 
-  return {
-    width,
-    height,
-    translateX,
-    translateY,
-  };
+  return [x, y];
 }
 
 export default useDraggable;

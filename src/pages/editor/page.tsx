@@ -6,6 +6,9 @@ const EditorPage: FC = () => (
   <Figure
     type="square"
     data={createFigure()}
+    onFigureUpdate={(f): void => {
+      console.info(f, 'updated figure');
+    }}
   />
 );
 
