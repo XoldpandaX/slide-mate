@@ -1,6 +1,6 @@
 {
   "name": "slide-mate",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/ramda": "^0.29.3",
     "clsx": "^1.2.1",
     "nanoid": "^4.0.2",
+    "ramda": "^0.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-moveable": "^0.52.0",
