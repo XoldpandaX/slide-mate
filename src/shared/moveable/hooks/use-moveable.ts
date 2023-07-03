@@ -13,6 +13,7 @@ type Ref = HTMLElement | SVGSVGElement;
 interface UseMoveable<RefElement extends Ref> {
   moveableRef: RefObject<RefElement>;
   moveableInitStyles: { width: string; height: string; transform: string };
+  moveableCssClasses: string;
   wrapperCssClasses: string;
   handleDragStart: () => void;
   handleDragEnd: (e: OnDragStart | OnDragEnd, onFigureUpdate: (figure: IFigure) => void) => void;
@@ -38,8 +39,9 @@ const useDraggable = <RefElement extends Ref>(
     ref: refClickOutside,
   });
 
+  const moveableCssClasses = cn(!isSelected && styles.moveableWrapper__moveable);
   const wrapperCssClasses = cn(
-    styles.figure,
+    styles.moveableWrapper,
     isDrag && isDragRender && styles.hideMoveableControl,
     !isSelected && styles.hideMoveableControlBox
   );
@@ -100,6 +102,7 @@ const useDraggable = <RefElement extends Ref>(
     moveableRef: elRef,
     moveableInitStyles,
     wrapperCssClasses,
+    moveableCssClasses,
     handleDragStart,
     handleDragEnd,
     handleRender,

@@ -19,6 +19,7 @@ export const Figure: FC<IFigureProps> = ({ data, onFigureUpdate }) => {
     moveableRef,
     moveableInitStyles,
     wrapperCssClasses,
+    moveableCssClasses,
     handleDragStart,
     handleDragEnd,
     handleRender,
@@ -33,6 +34,7 @@ export const Figure: FC<IFigureProps> = ({ data, onFigureUpdate }) => {
       <Suspense fallback={<div>loading</div>}>
         <SvgFigure
           ref={moveableRef}
+          className={moveableCssClasses}
           fill={data.fill}
           style={moveableInitStyles}
           onMouseDown={() => {

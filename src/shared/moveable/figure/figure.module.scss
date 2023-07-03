@@ -1,5 +1,10 @@
-.figure {
-  color: red;
+.moveableWrapper {
+  &__moveable {
+    &:hover {
+      // border
+      box-shadow: 0 0 0 1px #4af;
+    }
+  }
 
   &.hideMoveableControl {
     cursor: move;
