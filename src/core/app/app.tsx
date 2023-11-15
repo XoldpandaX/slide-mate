@@ -1,13 +1,15 @@
-import { type FC } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { FC } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useTheme } from '@/core/hooks/use-theme';
 
-import css from './app.module.scss';
+// import css from './app.module.scss';
 
-export const App: FC = () => (
-  <div className={css.app}>
-    hello app
-    <Outlet />
-    <Link to="/auth">Auth page</Link>
-    <Link to="/editor">Editor page</Link>
-  </div>
-);
+export const App: FC = () => {
+  const [{ cssClasses }] = useTheme();
+
+  return (
+    <div className={cssClasses}>
+      <Outlet />
+    </div>
+  );
+};

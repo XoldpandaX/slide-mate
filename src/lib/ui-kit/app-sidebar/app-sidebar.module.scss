@@ -1,0 +1,13 @@
+@import "@blueprintjs/core/lib/scss/variables";
+@import "../common/utils/mixins";
+
+.app-sidebar {
+  @include dark-theme-color($dark-gray2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+  height: 100vh;
+}

@@ -22,6 +22,7 @@ export const buildLoaders = (opts: BuildOptions): RuleSetRule[] => {
             localIdentName: opts.isDev ? '[path][name]__[local]' : '[hash:base64]',
             localIdentHashSalt: 'hash',
             localIdentHashDigestLength: 8,
+            exportLocalsConvention: 'camelCase',
           },
         },
       },

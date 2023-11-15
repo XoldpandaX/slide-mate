@@ -1,0 +1,11 @@
+@import "@blueprintjs/core/src/common/variables";
+
+/**
+  A mixin that is used to change the theme of a component or component block,
+  which depends on the selected general blueprintjs theme.
+ */
+@mixin dark-theme-color($background-color) {
+  :global(.#{$ns}-dark) & {
+    background-color: $background-color;
+  }
+}

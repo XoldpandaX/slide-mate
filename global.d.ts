@@ -1,8 +1,6 @@
-declare module '*.scss' {
-  type IClassNames = Record<string, string>;
-
-  const classNames: IClassNames;
-  export = classNames;
+declare module '*.module.scss' {
+  const classes: Record<string, string>;
+  export default classes;
 }
 
 declare module '*.svg' {

@@ -18,15 +18,17 @@
       "@/*": ["./src/*"]
     },
     "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
+      {"name": "typescript-plugin-css-modules",
+        "options": {
+          "allowUnknownClassnames": true
+        }
       }
     ]
   },
   "ts-node": {
     "compilerOptions": {
-      "module": "CommonJS"
+      "module": "CommonJS",
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx", "./global.d.ts"]
 }

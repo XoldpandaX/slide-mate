@@ -1,0 +1,11 @@
+@import "src/lib/ui-kit/common/utils/colors";
+
+.sidebar {
+  &-top {
+    overflow-y: auto;
+  }
+
+  &-bottom {
+    border-top: 1px solid $theme-black;
+  }
+}
