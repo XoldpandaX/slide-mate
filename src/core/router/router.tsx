@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { App } from '@/core/app/app';
-import { AuthPage } from '@/pages/auth/lazy';
-import { EditorPage } from '@/pages/editor/lazy';
+import { AuthPage } from '@/core/pages/auth/lazy';
+import { EditorPage } from '@/core/pages/editor/lazy';
 import { RouterSuspense } from './router-suspense';
 
 export const router = createBrowserRouter([
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'editor',
+        index: true,
         element: (
           <RouterSuspense>
             <EditorPage />

@@ -1,0 +1,7 @@
+const SIDEBAR_WIDTH = 70;
+const TOOLBAR_LEFT_INDENT = SIDEBAR_WIDTH;
+
+export default {
+  SIDEBAR_WIDTH,
+  TOOLBAR_LEFT_INDENT,
+};
