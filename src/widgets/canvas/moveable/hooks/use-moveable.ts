@@ -1,6 +1,6 @@
 import { useRef, useState, RefObject } from 'react';
 import { OnDragStart, OnDragEnd, OnRender } from 'react-moveable';
-import { IFigure } from '@/lib/types/figure';
+import { Shape } from '@/lib/types/shape';
 import { cn } from '@/lib/utils/cn';
 import { createFigure } from '@/widgets/canvas/moveable';
 import { useClickOutside } from '@/lib/hooks/use-click-outside';
@@ -45,13 +45,13 @@ interface UseMoveable<RefElement extends Ref> {
   moveableCssClasses: string;
   wrapperCssClasses: string;
   handleDragStart: () => void;
-  handleDragEnd: (e: OnDragStart | OnDragEnd, onFigureUpdate: (figure: IFigure) => void) => void;
+  handleDragEnd: (e: OnDragStart | OnDragEnd, onFigureUpdate: (figure: Shape) => void) => void;
   handleRender: (e: OnRender) => void;
   changeSelectionState: (state: boolean) => void;
 }
 
 const useDraggable = <RefElement extends Ref>(
-  initFigure: IFigure,
+  initFigure: Shape,
   refClickOutside: RefObject<Ref>
 ): UseMoveable<RefElement> => {
   const elRef = useRef<RefElement>(null);
@@ -87,7 +87,7 @@ const useDraggable = <RefElement extends Ref>(
 
   const handleDragEnd = (
     e: OnDragStart | OnDragEnd,
-    onFigureUpdate: (figure: IFigure) => void
+    onFigureUpdate: (figure: Shape) => void
   ): void => {
     const { target } = e;
     const [x, y] = getTargetTransformValue(e.target);

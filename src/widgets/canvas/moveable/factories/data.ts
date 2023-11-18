@@ -1,6 +1,6 @@
-import { IFigure } from '@/lib/types/figure';
+import { Shape } from '@/lib/types/shape';
 
-const emptyFigure: IFigure = {
+const emptyFigure: Shape = {
   width: 50,
   height: 50,
   top: 324,

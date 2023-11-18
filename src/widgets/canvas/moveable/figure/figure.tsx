@@ -1,15 +1,15 @@
 import { Suspense, FC, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import { OnDragEnd, OnRender } from 'react-moveable';
-import { IFigure } from '@/lib/types/figure';
+import { Shape } from '@/lib/types/shape';
 import { getFigureSvgByName } from '../../components/figure/get-figure-svg-by-name';
 import Moveable from '../moveable';
 import useMoveable from '../hooks/use-moveable';
 
 export interface IFigureProps {
   type: 'square';
-  data: IFigure;
-  onFigureUpdate: (figure: IFigure) => void;
+  data: Shape;
+  onFigureUpdate: (figure: Shape) => void;
 }
 
 export const Figure: FC<IFigureProps> = ({ data, onFigureUpdate }) => {

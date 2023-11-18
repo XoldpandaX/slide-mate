@@ -1,9 +1,12 @@
 @import "src/lib/ui-kit/common/utils/colors";
 
 .sidebar-theme-button {
-  height: 50px;
-
   // highlight icon white on dark theme
+
+  svg {
+    color: #abb3bf;
+  }
+
   &-theme-dark {
     &:hover {
       svg {

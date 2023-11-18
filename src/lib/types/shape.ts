@@ -1,4 +1,4 @@
-export interface IFigure {
+export interface Shape {
   width: number;
   height: number;
   top: number;
