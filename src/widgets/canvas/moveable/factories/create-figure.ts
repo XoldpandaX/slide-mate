@@ -1,4 +1,4 @@
-import { IFigure } from '@/lib/types/figure';
+import { Shape } from '@/lib/types/shape';
 import data from './data';
 
-export const createFigure = (figure?: IFigure): IFigure => figure ?? data.emptyFigure;
+export const createFigure = (figure?: Shape): Shape => figure ?? data.emptyFigure;

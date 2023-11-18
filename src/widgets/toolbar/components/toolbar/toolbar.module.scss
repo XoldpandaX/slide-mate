@@ -1,7 +1,15 @@
+@import "src/lib/ui-kit/common/utils/colors";
+
 .toolbar {
-  position: absolute;
-  left: 70px;
-  width: 170px;
-  height: 100vh;
-  background-color: red;
+  border-right: 1px solid #222;
+  border-left: 1px solid #222;
+
+  &-top {
+    overflow-y: auto;
+  }
+
+  &-bottom {
+    height: 50px;
+    border-top: 1px solid $theme-black;
+  }
 }
